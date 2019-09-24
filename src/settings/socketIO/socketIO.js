@@ -5,9 +5,11 @@ module.exports = (http) => {
 
   io.on('connection', function (socket) {
     socket.on('join', function (data) {
+      console.log(data,'data2')
       socket.join(data.roomId);
       socket.room = data.roomId;
       const sockets = io.of('/').in().adapter.rooms[data.roomId];
+      console.log(socket,'sockets')
       if (sockets.length === 1) {
         socket.emit('init')
       } else {
@@ -22,10 +24,12 @@ module.exports = (http) => {
       }
     });
     socket.on('signal', (data) => {
+      console.log(data,'data')
       io.to(data.room).emit('desc', data.desc)
     })
     socket.on('disconnect', () => {
       const roomId = Object.keys(socket.adapter.rooms)[0]
+      console.log('roomId', roomId)
       if (socket.room) {
         io.to(socket.room).emit('disconnected')
       }
