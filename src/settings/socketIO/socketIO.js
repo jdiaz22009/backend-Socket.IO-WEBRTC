@@ -4,6 +4,7 @@ module.exports = (http) => {
   const io = socketIO(http)
 
   io.on('connection', function (socket) {
+    console.log('entre connection')
     socket.on('join', function (data) {
       console.log(data,'data2')
       socket.join(data.roomId);
